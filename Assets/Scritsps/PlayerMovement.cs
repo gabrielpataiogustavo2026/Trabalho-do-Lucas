@@ -1,5 +1,4 @@
 using System;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -28,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
         Movement();
         Jump();
         Attack();
+        FallingJump();
     }
 
     private void UpdateAnimator()
@@ -50,7 +50,21 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            isGrounded = false; // Garante que sai do chão imediatamente ao pular
             animator.SetTrigger("Jump");
+        }
+    }
+
+    private void FallingJump()
+    {
+        // Verifica se o jogador está a cair (velocidade Y negativa e não está no chão)
+        if (rb.velocity.y < 0 && !isGrounded)
+        {
+            animator.SetBool("falling", true);
+        }
+        else
+        {
+            animator.SetBool("falling", false);
         }
     }
 
@@ -92,10 +106,9 @@ public class PlayerMovement : MonoBehaviour
 
             child.rotation = newRotation;
         }
-
     }
 
-    // Verifica se o jogador está no chão (não é a melhor forma de fazer isso)
+    // Verifica se o jogador está no chão
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
