@@ -108,6 +108,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void TocarAnimacaoDeDano()
+    {
+        animator.SetTrigger("Machucado");
+    }
+
     // Verifica se o jogador está no chão
     private void OnCollisionEnter2D(Collision2D collision)
     {

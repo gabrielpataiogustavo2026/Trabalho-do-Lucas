@@ -4,6 +4,7 @@ using UnityEngine;
 public class SistemaDeVida : MonoBehaviour
 {
     public BarraDeVida barraDeVida;
+    public PlayerMovement jogador;
 
     //Mostra na unity um slider que vai de 0 a 100
     [Range(0, 100)]
@@ -16,6 +17,7 @@ public class SistemaDeVida : MonoBehaviour
     {
         vidaAtual = vidaMaxima;
         AtualizarVida();
+        jogador = GetComponent<PlayerMovement>();
     }
 
     public virtual void AplicarDano(float dano)
@@ -24,6 +26,11 @@ public class SistemaDeVida : MonoBehaviour
         if (vidaAtual <= 0)
         {
             Morrer();
+        }
+
+        if(jogador != null)
+        {
+            jogador.TocarAnimacaoDeDano();
         }
 
         AtualizarVida();
